@@ -1,1 +1,1 @@
-sw camp
+sw ai
