@@ -2,3 +2,6 @@
 c/eod
 c/hello
 c/add
+c/*
+!c/*.c
+!c/lib
