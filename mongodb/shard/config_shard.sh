@@ -33,7 +33,7 @@ sleep 3s
 mkdir -pv /shard/data/shard1db
 touch /shard/data/logs/shard1.log
 
-mongo --config /work/neo/mongodb/shard/mongoShard1.conf &
+mongod --config /work/neo/mongodb/shard/mongoShard1.conf &
 sleep 2s
 
 mongo $IP_TEMP:27021 < rs.init
@@ -42,7 +42,7 @@ mongo $IP_TEMP:27021 < rs.init
 mkdir -pv /shard/data/shard2db
 touch /shard/data/logs/shard2.log
 
-mongo --config /work/neo/mongodb/shard/mongoShard2.conf &
+mongod --config /work/neo/mongodb/shard/mongoShard2.conf &
 sleep 2s
 
 mongo $IP_TEMP:27022 < rs.init
