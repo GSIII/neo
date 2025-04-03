@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        function Car(brand, grade, maxFuel, displacement, price) {
+            this.brand = brand;
+            this.grade = grade;
+            this.maxFuel = maxFuel;
+            this.displacement = displacement;
+            this.price = price;
+
+            this.info = function () {
+                document.write(`brand : ${this.brand}<br>`)
+                document.write(`grade : ${this.grade}<br>`)
+                document.write(`maxfuel : ${this.maxFuel}<br>`)
+                document.write(`displacement : ${this.displacement}<br>`)
+                document.write(`price : ${this.price}<br><hr />`)
+
+            }
+
+
+
+            this.drive = function (from, to, distance) {
+                this.from = from;
+                this.to = to;
+                this.distance = distance;
+                this.displacement = distance + this.displacement;
+                this.maxFuel = this.maxFuel - distance;
+                document.write(`${this.brand} 차량이 ${from}에서 ${to}까지 ${distance}KM 주행하셨습니다.<br>`);
+                document.write(`총 주행 거리는 ${this.displacement}KM입니다.<br>`)
+                document.write(`잔여 연료량은 ${this.maxFuel}입니다.<br>`)
+
+                this.maxFuel < 50 ? document.write(`주유가 필요합니다.<br><hr>`) : document.write("<hr>")
+            }
+
+            this.refueling = function (amount) {
+                this.amount = amount;
+                this.maxFuel = this.maxFuel + amount;
+                document.write(`${amount}L 주유하여 잔여 연료량은 ${this.maxFuel}입니다.<br><hr>`)
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script>
+        let benz = new Car("Benz", "SUV", 900, 4000, 3000);
+        benz.info();
+        benz.drive("Seoul", "Busan", 400)
+        benz.drive("Busan", "Seoul", 460);
+        benz.refueling(860)
+
+        let bmw = new Car("BMW", "Sedan", 500, 2500, 2000)
+        bmw.info();
+        bmw.drive("Seoul", "Daejeon", 300);
+        bmw.refueling(200)
+        bmw.drive("Daejeon", "Seoul", 300);
+    </script>
+</body>
+
+</html>

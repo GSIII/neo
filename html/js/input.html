@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+
+<body>
+    <h3></h3>
+    <script>
+        let n = prompt("How much number input? : ")
+        let building = prompt("input number : ").split(" ").map(Number)
+        document.write("<br>building : ", building)
+
+        let min_build = Math.min(...building);
+        document.write("<br>min(building) : ", min_build)
+
+        let min_build_n = min_build * n;
+        document.write("<br>min(building) * n : ", min_build_n)
+
+        let sum_building = 0;
+        for (let i = 0; i < building.length; i++) {
+            sum_building += building[i];
+        }
+        document.write("<br>sum(building) : ", sum_building)
+
+        let result = sum_building - min_build_n;
+        document.write("<br>sum(building) - (min(building) *n) : ", result)   
+    </script>
+</body>
+
+</html>
