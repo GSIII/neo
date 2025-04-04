@@ -59,4 +59,51 @@ app.post("/delete", (req, res) => {
   res.redirect("/select");
 });
 
+app.post("/login", async (req, res) => {
+  try {
+    const { id, pw } = req.body;
+
+    const [result] = await connection.query(
+      "SELECT * FROM user WHERE userid = ? AND passwd = ?",
+      [id, pw]
+    );
+
+    if (result.length === 0) {
+      console.log("로그인 실패: 아이디 또는 비밀번호가 잘못됨");
+      return res.redirect("/error.html");
+    }
+
+    if (id === "root" || id === "admin") {
+      console.log(`${id} 로그인함 (관리자)`);
+      return res.redirect("/member.html");
+    } else {
+      console.log(`${id} 로그인함 (일반 사용자)`);
+      return res.redirect("/main.html");
+    }
+  } catch (error) {
+    console.error("로그인 처리 중 오류 발생:", error);
+    res.redirect("/error.html");
+  }
+});
+
+app.post("/register", (req, res) => {
+  const { id, pw } = req.body;
+  const [existingId] = connection.query(
+    "select * from user  where userid = ?",
+    [id]
+  );
+  if (existingId) {
+    return res.send(`
+      <script>
+        alert("이미 존재하는 아이디입니다.");
+        window.location.href = "/register.html"; 
+      </script>
+    `);
+  } else {
+    const result = connection.query("insert into user values (?, ?)", [id, pw]);
+    console.log(result);
+    res.redirect("/index.html");
+  }
+});
+
 module.exports = app;
