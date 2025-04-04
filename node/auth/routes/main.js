@@ -18,21 +18,136 @@ var connection = new mysql({
   database: process.env.database,
 });
 
+function template_nodata(res) {
+  res.writeHead(200);
+  var template = `
+    <!DOCTYPE html>
+        <html>
+        <head>
+          <title>No Data</title>
+          <meta charset="UTF-8">
+          <link type="text/css" rel="stylesheet" href="mystyle.css" />
+        </head>
+        <body>
+          <h3>데이터가 존재하지 않습니다.</h3>
+        </body>
+        </html>
+  `;
+  res.end(template);
+}
+
+function template_result(result, res) {
+  res.writeHead(200);
+  var template = `
+    <!DOCTYPE html>
+        <html>
+        <head>
+          <title>No Data</title>
+          <meta charset="UTF-8">
+          <link type="text/css" rel="stylesheet" href="mystyle.css" />
+        </head>
+        <body>
+        <table border="1" style="margin:auto">
+          <thead>
+            <tr><th>User ID</th><th>Password</th></tr>
+          </thead>
+            <tbody>
+              `;
+  for (var i = 0; i < result.length; i++) {
+    template += `
+            <tr>
+              <td>${result[i]["userid"]}</td>
+              <td>${result[i]["passwd"]}</td>
+            </tr>
+          `;
+  }
+  template += `
+            </tbody>
+          </table>
+        </body>
+        </html>
+  `;
+  res.end(template);
+}
+
 app.get("/Hello", (req, res) => {
   res.send("Hello Node JS~!!");
+});
+
+app.post("/login", (req, res) => {
+  const { id, pw } = req.body;
+  const result = connection.query(
+    "select * from user where userid=? and passwd=?",
+    [id, pw]
+  );
+  if (result.length == 0) {
+    res.redirect("error.html");
+  }
+  if (id == "admin" || id == "root") {
+    console.log(id + "=> Administrator Logined");
+    res.redirect("member.html?id=" + id);
+  } else {
+    console.log(id + "=> User Logined");
+    res.redirect("user.html?id=" + id);
+  }
+});
+
+app.post("/register", (req, res) => {
+  const { id, pw } = req.body;
+  if (id == "") {
+    res.redirect("register.html");
+  } else {
+    let result = connection.query("select * from user where userid=?", [id]);
+    if (result.length > 0) {
+      res.writeHead(200);
+      var template = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Error</title>
+          <meta charset="UTF-8">
+        </head>
+        <body>
+          <div>
+          <h4 style="margin-left:30px">이미 존재하는 아이디 입니다.</h4>
+          <a href="register.html" style="margin-left:30px">다시 시도하기</a>
+          </div>
+        </body>
+        </html>
+      `;
+      res.end(template);
+    } else {
+      const result = connection.query("insert into user values (?,?)", [
+        id,
+        pw,
+      ]);
+      console.log(result);
+      res.redirect("/");
+    }
+  }
 });
 
 app.get("/select", (req, res) => {
   const result = connection.query("select*from user");
   console.log(result);
-  res.send(result);
+  // res.send(result);
+  if (result.length == 0) {
+    template_nodata(res);
+  } else {
+    template_result(result, res);
+  }
 });
 
 app.get("/selectQuery", (req, res) => {
   const id = req.query.id;
   const result = connection.query("select*from user where userid = ?", [id]);
   console.log(result);
-  res.send(result);
+  // res.send(result);
+  if (result.length == 0) {
+    template_nodata(res);
+  } else {
+    template_result(result, res);
+  }
 });
 
 app.post("/insert", (req, res) => {
@@ -57,72 +172,6 @@ app.post("/delete", (req, res) => {
   const result = connection.query("delete from user where userid = ?", [id]);
   console.log(result);
   res.redirect("/select");
-});
-
-app.post("/login", (req, res) => {
-  // const { id, pw } = req.body;
-  //   const [result] = await connection.query(
-  //     "SELECT * FROM user WHERE userid = ? AND passwd = ?",
-  //     [id, pw]
-  //   );
-
-  //   if (result.length === 0) {
-  //     console.log("로그인 실패: 아이디 또는 비밀번호가 잘못됨");
-  //     return res.redirect("/error.html");
-  //   }
-
-  //   if (id === "root" || id === "admin") {
-  //     console.log(`${id} 로그인함 (관리자)`);
-  //     return res.redirect("/member.html");
-  //   } else {
-  //     console.log(`${id} 로그인함 (일반 사용자)`);
-  //     return res.redirect("/main.html");
-  //   }
-  // } catch (error) {
-  //   console.error("로그인 처리 중 오류 발생:", error);
-  //   res.redirect("/error.html");
-  // }
-
-  const { id, pw } = req.body;
-  const result = connection.query(
-    "select * from user where userid=? and passwd=?",
-    [id, pw]
-  );
-  if (result.length == 0) {
-    res.redirect("error.html");
-  }
-  if (id == "admin" || id == "root") {
-    console.log(id + "=> Administrator Logined");
-    res.redirect("member.html");
-  } else {
-    console.log(id + "=> User Logined");
-    res.redirect("main.html");
-  }
-});
-
-app.post("/register", (req, res) => {
-  // const { id, pw } = req.body;
-  // const [existingId] = connection.query(
-  //   "select * from user  where userid = ?",
-  //   [id]
-  // );
-  // if (existingId) {
-  //   return res.send(`
-  //     <script>
-  //       alert("이미 존재하는 아이디입니다.");
-  //       window.location.href = "/register.html";
-  //     </script>
-  //   `);
-  // } else {
-  //   const result = connection.query("insert into user values (?, ?)", [id, pw]);
-  //   console.log(result);
-  //   res.redirect("/index.html");
-  // }
-
-  const { id, pw } = req.body;
-  const result = connection.query("insert into user values (?,?)", [id, pw]);
-  console.log(result);
-  res.redirect("/");
 });
 
 module.exports = app;
