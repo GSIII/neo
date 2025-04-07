@@ -127,6 +127,7 @@ app.post("/register", (req, res) => {
   }
 });
 
+// request O, query X
 app.get("/select", (req, res) => {
   const result = connection.query("select*from user");
   console.log(result);
@@ -138,9 +139,9 @@ app.get("/select", (req, res) => {
   }
 });
 
-app.get("/selectQuery", (req, res) => {
-  const id = req.query.id;
-  const result = connection.query("select*from user where userid = ?", [id]);
+// request X query x
+app.post("/select", (req, res) => {
+  const result = connection.query("select*from user");
   console.log(result);
   // res.send(result);
   if (result.length == 0) {
@@ -150,28 +151,113 @@ app.get("/selectQuery", (req, res) => {
   }
 });
 
-app.post("/insert", (req, res) => {
-  const { id, pw } = req.body;
-  const result = connection.query("insert into user values (?, ?)", [id, pw]);
-  console.log(result);
-  res.redirect("/selectQuery?id=" + req.body.id);
+// request O, quert O
+app.get("/selectQuery", (req, res) => {
+  const id = req.query.id;
+  if (id == "") {
+    res.write("<script>alert('User-id is empty');</script>");
+  } else {
+    const result = connection.query("select*from user where userid = ?", [id]);
+    console.log(result);
+    // res.send(result);
+    if (result.length == 0) {
+      template_nodata(res);
+    } else {
+      template_result(result, res);
+    }
+  }
 });
 
+// request O, quert O
+app.post("/selectQuery", (req, res) => {
+  const id = req.query.id;
+  if (id == "") {
+    res.write("<script>alert('User-id is empty');</script>");
+  } else {
+    const result = connection.query("select*from user where userid = ?", [id]);
+    console.log(result);
+    // res.send(result);
+    if (result.length == 0) {
+      template_nodata(res);
+    } else {
+      template_result(result, res);
+    }
+  }
+});
+
+// request O, query O
+app.post("/insert", (req, res) => {
+  const { id, pw } = req.body;
+  if (id == "" || pw == "") {
+    res.write("<script>alert('User-id or Password is empty');</script>");
+  } else {
+    let result = connection.query("select * from user where userid=?", [id]);
+    if (result.length > 0) {
+      res.writeHead(200);
+      var template = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Error</title>
+          <meta charset="UTF-8">
+        </head>
+        <body>
+          <div>
+          <h3 style="margin-left:30px">Register Failed</h3>
+          <h4 style="margin-left:30px">이미 존재하는 아이디 입니다.</h4>
+          </div>
+        </body>
+        </html>`;
+      res.end(template);
+    } else {
+      const result = connection.query("insert into user values (?, ?)", [
+        id,
+        pw,
+      ]);
+      console.log(result);
+      res.redirect("/selectQuery?id=" + id);
+    }
+  }
+});
+
+// request O, query O
 app.post("/update", (req, res) => {
   const { id, pw } = req.body;
-  const result = connection.query(
-    "update user set passwd = ? where userid = ?",
-    [pw, id]
-  );
-  console.log(result);
-  res.redirect("/selectQuery?id=" + req.body.id);
+  if (id == "" || pw == "") {
+    res.write("<script>alert('User-id or Password is empty');</script>");
+  } else {
+    let result = connection.query("select * from user where userid=?", [id]);
+    console.log(result);
+    if (result.length == 0) {
+      template_nodata(res);
+    } else {
+      const result = connection.query(
+        "update user set passwd = ? where userid = ?",
+        [pw, id]
+      );
+      console.log(result);
+      res.redirect("/selectQuery?id=" + req.body.id);
+    }
+  }
 });
 
 app.post("/delete", (req, res) => {
   const id = req.body.id;
-  const result = connection.query("delete from user where userid = ?", [id]);
-  console.log(result);
-  res.redirect("/select");
+  if (id == "") {
+    res.write("<script>alert('User-id or Password is empty');</script>");
+  } else {
+    let result = connection.query("select * from user where userid=?", [id]);
+    console.log(result);
+    if (result.length == 0) {
+      template_nodata(res);
+    } else {
+      const result = connection.query("delete from user where userid = ?", [
+        id,
+      ]);
+      console.log(result);
+      res.redirect("/select");
+    }
+  }
 });
 
 module.exports = app;
