@@ -127,7 +127,7 @@ app.post("/register", (req, res) => {
   }
 });
 
-// request O, query X
+// request X, query X
 app.get("/select", (req, res) => {
   const result = connection.query("select*from user");
   console.log(result);
@@ -151,7 +151,7 @@ app.post("/select", (req, res) => {
   }
 });
 
-// request O, quert O
+// request O, query O
 app.get("/selectQuery", (req, res) => {
   const id = req.query.id;
   if (id == "") {
@@ -168,9 +168,9 @@ app.get("/selectQuery", (req, res) => {
   }
 });
 
-// request O, quert O
+// request O, query O
 app.post("/selectQuery", (req, res) => {
-  const id = req.query.id;
+  const id = req.body.id;
   if (id == "") {
     res.write("<script>alert('User-id is empty');</script>");
   } else {
