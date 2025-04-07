@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Palindrome</title>
+    <script>
+        function checkPalindrome() {
+            let input = document.getElementById("input").value
+            let ta = document.querySelector('input[name="ta"]:checked').value;
+            let output = document.getElementById("output");
+            let result = "";
+
+            if (ta == "0") {
+                let num = parseInt(input);
+                let firstNum = Math.floor(num / 100);
+                let lastNum = num % 10;
+
+                if (firstNum === lastNum) {
+                    result = `입력하신 ${input}는 Palindrome입니다.`;
+                } else {
+                    result = `입력하신 ${input}는 Palindrome이 아닙니다.`;
+                }
+            } else {
+
+                let firstChar = input.substr(0, 1);
+                let lastChar = input.substr(2, 1);
+                if (firstChar == lastChar) {
+                    result = `입력하신 ${input}는 Palindrome입니다.`;
+                } else {
+                    result = `입력하신 ${input}는 Palindrome이 아닙니다.`;
+                }
+            }
+            output.innerHTML = result;
+        }
+    </script>
+</head>
+
+<body>
+    <h3>Palindrome 판별기</h3>
+    <hr>
+    <form>
+        <input type="text" id="input" placeholder="숫자/문자 3글자" />
+        <input type="button" value="Check Palindrome" onclick="checkPalindrome()" />
+        <p>
+            <label><input type="radio" name="ta" value="0" checked /> 숫자</label>
+            <label><input type="radio" name="ta" value="1" /> 문자</label>
+        </p>
+    </form>
+    <div style="margin:10px">
+        <span id="output">3자리 문자 또는 숫자를 입력하세요</span>
+    </div>
+</body>
+
+</html>
