@@ -3,14 +3,13 @@
 import prime_func
 
 while True:
-    a = int(input("Enter a number (0 to quit): "))
-    if a == 0:
-        break
-    else:
-        if prime_func.isPrime(a):
-            print(f"{a}은 소수입니다.\n")
-        else:
-            print(f"{a}은 소수가 아닙니다.\n")
+    n=int(input("Input number(0:Quit) : "))
 
+    if (n==0):
+        break
+    if (n<2):
+        print("re-enter number")
+        continue
+    print(f"{n} is prime number") if prime_func.prime(n)==1 else print(f"{n} is not prime number")
 
 
