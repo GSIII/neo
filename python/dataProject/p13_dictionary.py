@@ -74,7 +74,7 @@ for i in dict.items():
     print(f'value : {i[1]}')
     print()
 
-#get()
+# get()
 v1 = dict.get('b')
 print(f'dict.get("b") : {v1}')
 
