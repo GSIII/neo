@@ -88,6 +88,6 @@ del dict['c']
 
 print(f'after : {dict}')
 
-#clear
+# clear
 dict.clear()
 print(f'dict : {dict}')
