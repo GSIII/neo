@@ -7,5 +7,5 @@ b = int(input("Enter another number: "))
 
 my = class_calc.Calc(a, b)
 
-print(f'{a} + {b} = {my.add()}')
-print(f'{a} + {b} = {my.sub()}')
+print(f'{a} + {b} : {my.add()}')
+print(f'{a} + {b} : {my.sub()}')
