@@ -4,10 +4,10 @@ from selenium.webdriver.common.by import By
 
 driver = webdriver.Chrome()
 print(type(driver))
-print('-' * 50)
+print('-' * 50) 
 
-print('Go Google~!!')
-url = 'httpL://www.google.com'
+print('Go Goole~!!')
+url = 'http://www.google.com'
 driver.get(url)
 
 search_textbook = driver.find_element(By.NAME, 'q')
@@ -27,5 +27,5 @@ print(imagefile + ' saved')
 wait = 3
 driver.implicitly_wait(wait)
 
-driver.close()
-print('Brower closed')
+driver.quit()
+print('Brwowser closed')
