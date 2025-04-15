@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_1fbdce5f923cac1422abc09eb9c07e7c {
+                #map_9b1c32d0443cf7b1e081c89c1ff2045f {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,19 +39,19 @@
 <body>
     
     
-            <div class="folium-map" id="map_1fbdce5f923cac1422abc09eb9c07e7c" ></div>
+            <div class="folium-map" id="map_9b1c32d0443cf7b1e081c89c1ff2045f" ></div>
         
 </body>
 <script>
     
     
-            var map_1fbdce5f923cac1422abc09eb9c07e7c = L.map(
-                "map_1fbdce5f923cac1422abc09eb9c07e7c",
+            var map_9b1c32d0443cf7b1e081c89c1ff2045f = L.map(
+                "map_9b1c32d0443cf7b1e081c89c1ff2045f",
                 {
                     center: [37.566345, 126.977893],
                     crs: L.CRS.EPSG3857,
                     ...{
-  "zoom": 10,
+  "zoom": 17,
   "zoomControl": true,
   "preferCanvas": false,
 }
@@ -63,7 +63,7 @@
 
         
     
-            var tile_layer_3cae78c4dc11d9f3a8f6de8ce70bd22f = L.tileLayer(
+            var tile_layer_007efb34d3a6ca82b5d0308a49bddd64 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -80,7 +80,31 @@
             );
         
     
-            tile_layer_3cae78c4dc11d9f3a8f6de8ce70bd22f.addTo(map_1fbdce5f923cac1422abc09eb9c07e7c);
+            tile_layer_007efb34d3a6ca82b5d0308a49bddd64.addTo(map_9b1c32d0443cf7b1e081c89c1ff2045f);
         
+    
+            var marker_f601016eb259e8e1aebc7abf028c20de = L.marker(
+                [37.566345, 126.977893],
+                {
+}
+            ).addTo(map_9b1c32d0443cf7b1e081c89c1ff2045f);
+        
+    
+        var popup_088091597f855560f82c8e6cbbe19070 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_c0e66454f43be99f1fe40a412cdb8570 = $(`<div id="html_c0e66454f43be99f1fe40a412cdb8570" style="width: 100.0%; height: 100.0%;">서울특별시청</div>`)[0];
+                popup_088091597f855560f82c8e6cbbe19070.setContent(html_c0e66454f43be99f1fe40a412cdb8570);
+            
+        
+
+        marker_f601016eb259e8e1aebc7abf028c20de.bindPopup(popup_088091597f855560f82c8e6cbbe19070)
+        ;
+
+        
+    
 </script>
 </html>
