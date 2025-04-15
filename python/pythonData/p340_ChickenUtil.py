@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 class ChickenStore():
     myencoding = 'utf-8'
 
-    def getWebDriver(self, cmdJavaScript):
+    def getWebDraiver(self, cmdJavaScript):
         print(cmdJavaScript)
         self.driver.execute_script(cmdJavaScript)
         wait = 5
@@ -24,7 +24,7 @@ class ChickenStore():
             return None
         else:
             return BeautifulSoup(self.soup, 'html.parser')
-            
+    
     def get_request_url(self):
         request = urllib.request.Request(self.url)
         try:
@@ -42,7 +42,7 @@ class ChickenStore():
             print(msg)
             return None
         
-    def save2CSV(self, result):
+    def save2Csv(self, result):
         data = pd.DataFrame(result, columns=self.mycolumns)
         data.to_csv(self.brandName + '.csv', encoding=self.myencoding, index=True)
 
@@ -53,10 +53,10 @@ class ChickenStore():
         self.mycolumns = ['brand', 'store', 'sido', 'gungu', 'address']
 
         if self.brandName in ['pelicana', 'nene', 'cheogajip', 'goobne']:
-            self.mycolumns.apend('phone')
+            self.mycolumns.append('phone')
         else:
             pass
-
+    
         if self.brandName != 'goobne':
             self.soup = self.get_request_url()
             self.driver = None
